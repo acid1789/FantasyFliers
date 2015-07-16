@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using ServerCore;
 
-namespace FFServer
+namespace ServerCore
 {
-    class GlobalServer
+    public class GlobalServerManager
     {
         Thread _theThread;
         GlobalClient _gc;
+        string _address;
+        int _port;
         
         public event EventHandler<AccountInfoResponseArgs> OnAccountInfoResponse;
 
-        public GlobalServer()
+        public GlobalServerManager(string address, int port)
         {
+            _address = address;
+            _port = port;
+
             _theThread = new Thread(new ThreadStart(GlobalServerManagerThread));
             _theThread.Name = "Global Server Manager";
             _theThread.Start();
@@ -30,8 +34,8 @@ namespace FFServer
                     _gc = new GlobalClient();
                     _gc.OnAccountInfoResponse += OnAccountInfoResponse;
 
-                   
-                    _gc.Connect("127.0.0.1", 1789);
+
+                    _gc.Connect(_address, _port);
                     if (_gc.Connected)
                         LogThread.Log("Connected to global server", LogThread.LogMessageType.Normal, true);
                 }

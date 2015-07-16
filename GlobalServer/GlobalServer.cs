@@ -13,7 +13,9 @@ namespace GlobalServer
 
         static void Main(string[] args)
         {
-            _server = new ServerBase(1789, new GSTaskProcessor(), "server=127.0.0.1;uid=root;pwd=ugg$;database=global;");
+            _server = new ServerBase(1789, "server=127.0.0.1;uid=root;pwd=ugg$;database=global;");
+            _server.TaskProcessor = new GlobalTaskProcessor();
+            LogThread.AlwaysPrintToConsole = true;
 
             _server.ListenThread.OnConnectionAccepted += new EventHandler<SocketArg>(lt_OnConnectionAccepted);
 
@@ -31,8 +33,8 @@ namespace GlobalServer
 
         static void gclient_OnAccountInfoRequest(object sender, AccountInfoRequestArgs e)
         {
-            GSTask gst = new GSTask();
-            gst.TaskType = GSTask.Type.AccountInfoRequest;
+            GlobalTask gst = new GlobalTask();
+            gst.Type = (int)GlobalTask.GlobalType.AccountInfoRequest;
             gst.Client = (GlobalClient)sender;
             gst.Args = e;
 

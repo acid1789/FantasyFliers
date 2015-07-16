@@ -34,6 +34,7 @@
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnSignIn = new System.Windows.Forms.Button();
+            this.btnCreateAccount = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tbEmail
@@ -89,11 +90,23 @@
             this.btnSignIn.UseVisualStyleBackColor = true;
             this.btnSignIn.Click += new System.EventHandler(this.btnSignIn_Click);
             // 
+            // btnCreateAccount
+            // 
+            this.btnCreateAccount.Location = new System.Drawing.Point(44, 109);
+            this.btnCreateAccount.Name = "btnCreateAccount";
+            this.btnCreateAccount.Size = new System.Drawing.Size(75, 23);
+            this.btnCreateAccount.TabIndex = 4;
+            this.btnCreateAccount.Text = "Create";
+            this.btnCreateAccount.UseVisualStyleBackColor = true;
+            this.btnCreateAccount.Visible = false;
+            this.btnCreateAccount.Click += new System.EventHandler(this.btnCreateAccount_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(408, 162);
+            this.Controls.Add(this.btnCreateAccount);
             this.Controls.Add(this.btnSignIn);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.label2);
@@ -102,6 +115,7 @@
             this.Controls.Add(this.tbEmail);
             this.Name = "Form1";
             this.Text = "Test Client";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -115,6 +129,7 @@
         private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnSignIn;
+        private System.Windows.Forms.Button btnCreateAccount;
     }
 }
 

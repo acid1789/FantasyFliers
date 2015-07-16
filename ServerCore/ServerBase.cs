@@ -12,15 +12,14 @@ namespace ServerCore
         InputThread _inputThread;
         TaskProcessor _taskProcessor;
 
-        public ServerBase(int listenPort, TaskProcessor tp, string dbConnectString)
+        public ServerBase(int listenPort, string dbConnectString)
         {
-            _taskProcessor = tp;
-
             // Start log thread
             LogThread.Initialize();
 
             // Start database thread
-            _db = new DatabaseThread(dbConnectString);
+            if( dbConnectString != null )
+                _db = new DatabaseThread(dbConnectString);
 
             // Start listen thread
             _lt = new ListenThread(listenPort);
@@ -59,6 +58,7 @@ namespace ServerCore
         public TaskProcessor TaskProcessor
         {
             get { return _taskProcessor; }
+            set { _taskProcessor = value; }
         }
         #endregion
 

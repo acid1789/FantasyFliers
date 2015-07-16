@@ -39,6 +39,7 @@ namespace ServerCore
 
         void BeginPacket(GPacketType gt)
         {
+            LogThread.Log(string.Format("BeginPacket({0})", gt), LogThread.LogMessageType.Debug);
             BeginPacket((ushort)gt);
         }
 

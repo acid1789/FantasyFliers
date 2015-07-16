@@ -8,16 +8,13 @@ using ServerCore;
 
 namespace GlobalServer
 {
-    class GSTask : Task
+    class GlobalTask : Task
     {
-        public enum Type
+        public enum GlobalType
         {
             AccountInfoRequest,
             AccountInfoProcess,
         }
-
-        public Type TaskType;
-        public DBQuery Query;
 
         public GlobalClient Client
         {
@@ -59,40 +56,22 @@ namespace GlobalServer
         }
     }
 
-    class GSTaskProcessor : TaskProcessor
+    class GlobalTaskProcessor : TaskProcessor
     {
-        delegate void TaskHandler(GSTask task);
 
-        Dictionary<GSTask.Type, TaskHandler> _taskHandlers;
-
-        Dictionary<long, GSTask> _pendingQueries;
+        Dictionary<long, GlobalTask> _pendingQueries;
         Mutex _pqLock;
 
-        public GSTaskProcessor()
+        public GlobalTaskProcessor()
             : base()
         {
-            _taskHandlers = new Dictionary<GSTask.Type, TaskHandler>();
-            _taskHandlers[GSTask.Type.AccountInfoRequest] = AccountInfoRequestHandler;
-            _taskHandlers[GSTask.Type.AccountInfoProcess] = AccountInfoProcessHandler;
+            _taskHandlers[(int)GlobalTask.GlobalType.AccountInfoRequest] = AccountInfoRequestHandler;
+            _taskHandlers[(int)GlobalTask.GlobalType.AccountInfoProcess] = AccountInfoProcessHandler;
 
-            _pendingQueries = new Dictionary<long, GSTask>();
+            _pendingQueries = new Dictionary<long, GlobalTask>();
             _pqLock = new Mutex();
 
             GlobalServer.Database.OnQueryComplete += new EventHandler(Database_OnQueryComplete);
-        }
-
-        public override void ProcessTask(Task t)
-        {
-            GSTask gst = (GSTask)t;
-            if (gst != null)
-            {
-                // Call the task handler, this will throw an exception if the handler isnt registered.
-                _taskHandlers[gst.TaskType](gst);
-            }
-            else
-            {
-                throw new InvalidDataException("ProcessTask was given an invalid Task object");
-            }
         }
 
         void Database_OnQueryComplete(object sender, EventArgs e)
@@ -100,7 +79,7 @@ namespace GlobalServer
             DBQuery q = (DBQuery)sender;
 
             _pqLock.WaitOne();
-            GSTask task = _pendingQueries[q.Key];
+            GlobalTask task = _pendingQueries[q.Key];
             _pendingQueries.Remove(q.Key);
             _pqLock.ReleaseMutex();
 
@@ -109,8 +88,9 @@ namespace GlobalServer
         }
 
         #region Task Handlers
-        void AccountInfoRequestHandler(GSTask task)
+        void AccountInfoRequestHandler(Task t)
         {
+            GlobalTask task = (GlobalTask)t;
             // Fetch account from the database
             AccountInfoRequestArgs args = (AccountInfoRequestArgs)task.Args;
             long key = DateTime.Now.Ticks;
@@ -118,7 +98,7 @@ namespace GlobalServer
             DBQuery q = new DBQuery(sql, true, key);
             GlobalServer.Database.AddQuery(q);
 
-            task.TaskType = GSTask.Type.AccountInfoProcess;
+            task.Type = (int)GlobalTask.GlobalType.AccountInfoProcess;
             task.Query = q;
 
             _pqLock.WaitOne();
@@ -126,8 +106,9 @@ namespace GlobalServer
             _pqLock.ReleaseMutex();
         }
 
-        void AccountInfoProcessHandler(GSTask task)
+        void AccountInfoProcessHandler(Task t)
         {
+            GlobalTask task = (GlobalTask)t;
             int accountId = -1;
             string displayName = "";
             int hardCurrency = 0;

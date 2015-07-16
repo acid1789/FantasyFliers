@@ -62,6 +62,9 @@ namespace ServerCore
         {
             _dbConnectString = connectString;
 
+            _queries = new List<DBQuery>();
+            _queriesLock = new Mutex();
+
             _theThread = new Thread(new ThreadStart(DatabaseThreadFunc));
             _theThread.Name = "Database Thread";
             _theThread.Start();
@@ -144,6 +147,7 @@ namespace ServerCore
 
         void ExecuteQuery(DBQuery q)
         {
+            LogThread.Log(string.Format("ExecuteQuery - {0}", q.SqlString), LogThread.LogMessageType.Debug);
             MySqlCommand cmd = new MySqlCommand(q.SqlString, _sql);;
             if (q.Read)
             {
@@ -158,6 +162,7 @@ namespace ServerCore
                     }
                     rows.Add(row);
                 }
+                reader.Close();
                 q.Rows = rows;
             }
             else

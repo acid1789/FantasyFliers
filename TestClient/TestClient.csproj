@@ -46,6 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateAccountDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateAccountDlg.Designer.cs">
+      <DependentUpon>CreateAccountDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FFCManager.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +61,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CreateAccountDlg.resx">
+      <DependentUpon>CreateAccountDlg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -75,6 +85,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FFNetwork\FFNetwork.csproj">
+      <Project>{831FBE7F-4F21-479B-8188-B5EB00769611}</Project>
+      <Name>FFNetwork</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerCore\ServerCore.csproj">
+      <Project>{DE59F03B-351D-490B-AD42-20D21D0C57EE}</Project>
+      <Name>ServerCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

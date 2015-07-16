@@ -131,6 +131,7 @@ namespace ServerCore
 
             int marker = br.ReadInt32();
             ushort packetType = br.ReadUInt16();
+            LogThread.Log(string.Format("Processing packet type {0}", packetType), LogThread.LogMessageType.Debug);
 
             if (_packetHandlers.ContainsKey(packetType))
             {
@@ -148,12 +149,13 @@ namespace ServerCore
             }
             else
             {
-                LogThread.Log(string.Format("Unhandled packet type {0}", packetType), LogThread.LogMessageType.Debug, true);
+                LogThread.Log(string.Format("Unhandled packet type {0}", packetType), LogThread.LogMessageType.Error, true);
             }
         }
 
         protected void BeginPacket(PacketType type)
         {
+            LogThread.Log(string.Format("BeginPacket({0})", type), LogThread.LogMessageType.Debug);
             BeginPacket((ushort)type);
         }
 
@@ -178,6 +180,11 @@ namespace ServerCore
             _socket.Send(data);
 
             _lastSent = DateTime.Now;
+            LogThread.Log(string.Format("SendPacket {0} bytes", data.Length), LogThread.LogMessageType.Debug);
+
+            _outgoingBW.Close();
+            _outgoingBW = null;
+            _outgoingPacket = null;
         }
 
         public void Connect(string address, int port)

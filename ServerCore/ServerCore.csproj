@@ -46,7 +46,11 @@
   <ItemGroup>
     <Compile Include="Connection.cs" />
     <Compile Include="DatabaseThread.cs" />
+    <Compile Include="GameClient.cs" />
+    <Compile Include="GameServer.cs" />
     <Compile Include="GlobalClient.cs" />
+    <Compile Include="GlobalServerManager.cs" />
+    <Compile Include="GSTaskProcessor.cs" />
     <Compile Include="InputThread.cs" />
     <Compile Include="ListenThread.cs" />
     <Compile Include="LogThread.cs" />

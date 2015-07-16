@@ -4,82 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using ServerCore;
+using FFNetwork;
 
 namespace FFServer
 {
-    class FFServer
+    class FFServer : GameServer
     {
-        static ServerBase _server;
-        static GlobalServer _gs;
-
-        static Random _random;
-
-        static void Main(string[] args)
+        public FFServer(int listenPort, string dbConnectionString, string globalAddress, int globalPort) : base(listenPort, dbConnectionString, globalAddress, globalPort)
         {
-            // Start the global server manager
-            _gs = new GlobalServer();
-            _gs.OnAccountInfoResponse += new EventHandler<AccountInfoResponseArgs>(_gs_OnAccountInfoResponse);
-
-            // Start the server base
-            _server = new ServerBase(1255, new FFTaskProcessor(), null);
             LogThread.AlwaysPrintToConsole = true;
-            
-            // Register listen handler
-            _server.ListenThread.OnConnectionAccepted += new EventHandler<SocketArg>(lt_OnConnectionAccepted);
-
-            // Run the server
-            _server.Run();
-
-            // Start logging thread
-            LogThread.Initialize();
+            TaskProcessor = new FFTaskProcessor(this);
         }
 
-        static void lt_OnConnectionAccepted(object sender, SocketArg e)
+        public override GameClient CreateClient(System.Net.Sockets.Socket s)
         {
-            FFClient client = new FFClient(e.Socket);
+            FFClient client = new FFClient(s);
 
-            client.OnCredentialsRequest += new EventHandler<CredentialsRequestArgs>(client_OnCredentialsRequest);
+            // Register FF specific handlers
 
-            _server.InputThread.AddConnection(client);
+            return client;
         }
 
         #region Client Event Handlers
-        static void client_OnCredentialsRequest(object sender, CredentialsRequestArgs e)
-        {
-            FFTask t = new FFTask();
-            t.TaskType = FFTask.Type.CredentialsRequest;
-            t.Client = (FFClient)sender;
-            t.Args = e;
-
-            _server.TaskProcessor.AddTask(t);
-        }
-        #endregion
-
-        #region Global Server Event Handlers
-        static void _gs_OnAccountInfoResponse(object sender, AccountInfoResponseArgs e)
-        {
-            FFTask t = new FFTask();
-            t.TaskType = FFTask.Type.AccountInfoResponse;
-            t.Client = null;
-            t.Args = e;
-        }
         #endregion
 
         #region Accessors
-        public static Random Random
-        {
-            get { return _random; }
-        }
-
-        public static GlobalServer GlobalServer
-        {
-            get { return _gs; }
-        }
-
-        public static InputThread InputThread
-        {
-            get { return _server.InputThread; }
-        }
         #endregion
     }
 }
