@@ -44,18 +44,19 @@ namespace ServerCore
         }
 
         #region Packet Construction
-        public void RequestAccountInfo(int clientKey, string email, string password)
+        public void RequestAccountInfo(uint clientKey, string email, string password, string displayName)
         {
             BeginPacket(GPacketType.AccountInfoRequest);
 
             _outgoingBW.Write(clientKey);
             WriteUTF8String(email);
             WriteUTF8String(password);
+            WriteUTF8String(displayName);
 
             SendPacket();
         }
 
-        public void SendAccountInfo(int clientKey, int accountId, string displayName, int hardCurrency)
+        public void SendAccountInfo(uint clientKey, int accountId, string displayName, int hardCurrency)
         {
             BeginPacket(GPacketType.AccountInfoResponse);
 
@@ -72,16 +73,17 @@ namespace ServerCore
         void AccountInfoRequestHandler(BinaryReader br)
         {
             AccountInfoRequestArgs args = new AccountInfoRequestArgs();
-            args.ClientKey = br.ReadInt32();
+            args.ClientKey = br.ReadUInt32();
             args.Email = ReadUTF8String(br);
             args.Password = ReadUTF8String(br);
+            args.DisplayName = ReadUTF8String(br);
             OnAccountInfoRequest(this, args);
         }
 
         void AccountInfoResponseHandler(BinaryReader br)
         {
             AccountInfoResponseArgs args = new AccountInfoResponseArgs();
-            args.ClientKey = br.ReadInt32();
+            args.ClientKey = br.ReadUInt32();
             args.AccountId = br.ReadInt32();
             args.HardCurrency = br.ReadInt32();
             args.DisplayName = ReadUTF8String(br);
@@ -93,14 +95,15 @@ namespace ServerCore
     #region Args Classes
     public class AccountInfoRequestArgs : EventArgs
     {
-        public int ClientKey;
+        public uint ClientKey;
         public string Email;
         public string Password;
+        public string DisplayName;
     }
 
     public class AccountInfoResponseArgs : EventArgs
     {
-        public int ClientKey;
+        public uint ClientKey;
         public int AccountId;
         public int HardCurrency;
         public string DisplayName;

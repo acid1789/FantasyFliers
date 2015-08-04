@@ -1,0 +1,10 @@
+Install Android Developer tools - this should be installed with visual studio into C:\Program Files(x86)\Android\android_sdk
+Install Android USB driver for the target device
+Enable developer mode by clicking Settings->About Phone->Build Number 7 times
+Enable USB debugging from the Settings->Developer Tools menu
+Authorize USB debugging
+	in a command prompt:
+		cd <androidSDK>\platform-tools
+		adb devices
+
+	Click the authorize popup on the device

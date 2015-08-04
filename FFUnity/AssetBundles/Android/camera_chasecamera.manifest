@@ -1,0 +1,30 @@
+ManifestFileVersion: 0
+CRC: 1561369728
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: dc85a831f563d872eb26750adaae9d76
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ff0b7bbad74ca47d45a20e6c3cf15758
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 81
+  Script: {instanceID: 0}
+- Class: 92
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 60912a8797b3f7e4c8d70b68f529f006, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 124
+  Script: {instanceID: 0}
+Assets:
+- Assets/Game/Cameras/ChaseCamera.prefab
+Dependencies: []

@@ -22,8 +22,13 @@ namespace ServerCore
         Mutex _tasksLock;
         bool _processing;
 
+        DatabaseThread _db;
+
         protected delegate void TaskHandler(Task task);
         protected Dictionary<int, TaskHandler> _taskHandlers;
+
+        protected Dictionary<long, Task> _pendingQueries;
+        protected Mutex _pqLock;
 
         public TaskProcessor()
         {
@@ -31,6 +36,37 @@ namespace ServerCore
             _tasksLock = new Mutex();
 
             _taskHandlers = new Dictionary<int, TaskHandler>();
+            
+            _pendingQueries = new Dictionary<long, Task>();
+            _pqLock = new Mutex();
+        }
+
+        public void Database_OnQueryComplete(object sender, EventArgs e)
+        {
+            DBQuery q = (DBQuery)sender;
+
+            _pqLock.WaitOne();
+            Task task = _pendingQueries[q.Key];
+            _pendingQueries.Remove(q.Key);
+            _pqLock.ReleaseMutex();
+
+            // reschedule the task to deal with the new data\
+            if( task.Type >= 0 )
+                AddTask(task);
+        }
+
+        public DBQuery AddDBQuery(string sql, Task task)
+        {
+            long key = DateTime.Now.Ticks;
+            DBQuery q = new DBQuery(sql, true, key);
+            _db.AddQuery(q);
+
+            task.Query = q;
+
+            _pqLock.WaitOne();
+            _pendingQueries[key] = task;
+            _pqLock.ReleaseMutex();
+            return q;
         }
 
         public void AddTask(Task t)
@@ -74,5 +110,13 @@ namespace ServerCore
             LogThread.Log(string.Format("ProcessTask({0}) -> {1}", t.Type, _taskHandlers[t.Type].Method.Name), LogThread.LogMessageType.Debug);
             _taskHandlers[t.Type](t);
         }
+
+        #region Accessors
+        public DatabaseThread Database
+        {
+            get { return _db; }
+            set { _db = value; }       
+        }
+        #endregion
     }
 }

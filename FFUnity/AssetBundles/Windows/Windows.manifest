@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: drone_ronsdrone
+      Dependencies: {}
+    Info_1:
+      Name: course_ronslevel
+      Dependencies:
+        Dependency_0: env_ronslevel_pieces
+    Info_2:
+      Name: env_ronslevel_pieces
+      Dependencies: {}
+    Info_3:
+      Name: camera_chasecamera
+      Dependencies: {}
+    Info_4:
+      Name: drone_hammerhead
+      Dependencies: {}
+    Info_5:
+      Name: ui_main
+      Dependencies: {}

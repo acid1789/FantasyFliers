@@ -50,9 +50,9 @@ namespace ServerCore
         }
 
 
-        public void RequestAccountInfo(int clientKey, string email, string password)
+        public void RequestAccountInfo(uint clientKey, string email, string password, string displayName)
         {
-            _gc.RequestAccountInfo(clientKey, email, password);
+            _gc.RequestAccountInfo(clientKey, email, password, displayName);
         }
     }
 }

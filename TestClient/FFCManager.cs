@@ -17,6 +17,8 @@ namespace TestClient
         int _port;
 
         public event EventHandler SignInComplete;
+        public event EventHandler OnChatChannels;
+        public event EventHandler<ServerCore.ChatMessageArgs> OnChatMessage;
 
         public FFCManager(string address, int port)
         {
@@ -37,10 +39,12 @@ namespace TestClient
         {
             while (true)
             {
-                if (_ffc == null )
+                if (_ffc == null)
                 {
                     _ffc = new FFClient();
                     _ffc.OnAccountResponse += new EventHandler(_ffc_OnAccountResponse);
+                    _ffc.OnChatChannels += OnChatChannels;
+                    _ffc.OnChatMessage += OnChatMessage;
 
                     _ffc.Connect(_address, _port);
                 }
@@ -60,6 +64,16 @@ namespace TestClient
         public void SignIn(string email, string pass)
         {
             _ffc.SendAccountRequest(email, pass);
+        }
+
+        public void CreateAccount(string email, string password, string displayname)
+        {
+            _ffc.SendAccountRequest(email, password, displayname);
+        }
+
+        public void SendChat(int channel, string message)
+        {
+            _ffc.SendChat(channel, message, null);
         }
     }
 }

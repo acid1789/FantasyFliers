@@ -58,33 +58,11 @@ namespace GlobalServer
 
     class GlobalTaskProcessor : TaskProcessor
     {
-
-        Dictionary<long, GlobalTask> _pendingQueries;
-        Mutex _pqLock;
-
         public GlobalTaskProcessor()
             : base()
         {
             _taskHandlers[(int)GlobalTask.GlobalType.AccountInfoRequest] = AccountInfoRequestHandler;
-            _taskHandlers[(int)GlobalTask.GlobalType.AccountInfoProcess] = AccountInfoProcessHandler;
-
-            _pendingQueries = new Dictionary<long, GlobalTask>();
-            _pqLock = new Mutex();
-
-            GlobalServer.Database.OnQueryComplete += new EventHandler(Database_OnQueryComplete);
-        }
-
-        void Database_OnQueryComplete(object sender, EventArgs e)
-        {
-            DBQuery q = (DBQuery)sender;
-
-            _pqLock.WaitOne();
-            GlobalTask task = _pendingQueries[q.Key];
-            _pendingQueries.Remove(q.Key);
-            _pqLock.ReleaseMutex();
-
-            // reschedule the task to deal with the new data
-            AddTask(task);
+            _taskHandlers[(int)GlobalTask.GlobalType.AccountInfoProcess] = AccountInfoProcessHandler;            
         }
 
         #region Task Handlers
@@ -93,17 +71,9 @@ namespace GlobalServer
             GlobalTask task = (GlobalTask)t;
             // Fetch account from the database
             AccountInfoRequestArgs args = (AccountInfoRequestArgs)task.Args;
-            long key = DateTime.Now.Ticks;
-            string sql = string.Format("SELECT * FROM accounts WHERE email=\"{0}\";", args.Email);
-            DBQuery q = new DBQuery(sql, true, key);
-            GlobalServer.Database.AddQuery(q);
-
+            DBQuery q = AddDBQuery(string.Format("SELECT * FROM accounts WHERE email=\"{0}\";", args.Email), task);
+            
             task.Type = (int)GlobalTask.GlobalType.AccountInfoProcess;
-            task.Query = q;
-
-            _pqLock.WaitOne();
-            _pendingQueries[key] = task;
-            _pqLock.ReleaseMutex();
         }
 
         void AccountInfoProcessHandler(Task t)
@@ -114,9 +84,16 @@ namespace GlobalServer
             int hardCurrency = 0;
             
             AccountInfoRequestArgs args = (AccountInfoRequestArgs)task.Args;
+            bool sendAccountInfo = true;
 
             if (task.Query.Rows.Count > 0)
             {
+                // 0: account_id
+                // 1: email
+                // 2: password
+                // 3: display name
+                // 4: hard_currency
+
                 // Found the account, check the password
                 object[] row = task.Query.Rows[0];
                 accountId = (int)row[0];
@@ -134,9 +111,18 @@ namespace GlobalServer
             }
             else
             {
-                // Account does not exist - accountId remains invalid                
+                // Account does not exist
+                if (args.DisplayName != null)
+                {
+                    // This is actually a request to create the account.
+                    sendAccountInfo = false;
+
+                    task.Type = (int)GlobalTask.GlobalType.AccountInfoRequest;
+                    DBQuery q = AddDBQuery(string.Format("INSERT INTO accounts SET email=\"{0}\",password=\"{1}\",display_name=\"{2}\",hard_currency=\"{3}\";", args.Email, args.Password, args.DisplayName, 0), task);
+                }
             }
-            task.Client.SendAccountInfo(args.ClientKey, accountId, displayName, hardCurrency); 
+            if(sendAccountInfo )
+                task.Client.SendAccountInfo(args.ClientKey, accountId, displayName, hardCurrency); 
         }
         #endregion
     }

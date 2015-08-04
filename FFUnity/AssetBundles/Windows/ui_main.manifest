@@ -1,0 +1,47 @@
+ManifestFileVersion: 0
+CRC: 385586834
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 987b8b3d8e2e3d07ad3c766b615ddfc3
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d48f3c03a71b63f39423d449a18afe55
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 1573420865, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 32157b86ad2b3dd42a89a2e89eb30a91, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f017aed7072277745ac8cd046bab55d3, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 223
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Game/UI/UI_Countdown.prefab
+- Assets/Game/UI/UI_Hud_TimeTrial.prefab
+Dependencies: []

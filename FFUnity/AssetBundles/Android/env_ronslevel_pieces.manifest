@@ -1,0 +1,36 @@
+ManifestFileVersion: 0
+CRC: 512526405
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 27957a37c0be5f5850541b6ee521092a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3f627ff0da7f421c28f7c19f5c7fcde8
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 01190646515f1b4418ec98a692b1f59b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 887613664d7dadf459e59f3fa5c77e0c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Game/Environments/RonsLevel/Course Pieces/CourseMarker.prefab
+Dependencies: []

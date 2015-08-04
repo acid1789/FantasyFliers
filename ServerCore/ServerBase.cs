@@ -33,7 +33,14 @@ namespace ServerCore
             // Allow connections
             _lt.Start();
 
-            // Process
+            // Setup db callback
+            if (_db != null)
+            {
+                _taskProcessor.Database = _db;
+                _db.OnQueryComplete += new EventHandler(_taskProcessor.Database_OnQueryComplete);
+            }
+
+            // Process            
             _taskProcessor.Process();
 
             // Shutdown

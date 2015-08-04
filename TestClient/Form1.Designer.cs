@@ -35,6 +35,12 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnSignIn = new System.Windows.Forms.Button();
             this.btnCreateAccount = new System.Windows.Forms.Button();
+            this.tabChatTabs = new System.Windows.Forms.TabControl();
+            this.tabAll = new System.Windows.Forms.TabPage();
+            this.tbChat = new System.Windows.Forms.TextBox();
+            this.tbChatInput = new System.Windows.Forms.TextBox();
+            this.btnSendChat = new System.Windows.Forms.Button();
+            this.tabChatTabs.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbEmail
@@ -101,11 +107,64 @@
             this.btnCreateAccount.Visible = false;
             this.btnCreateAccount.Click += new System.EventHandler(this.btnCreateAccount_Click);
             // 
+            // tabChatTabs
+            // 
+            this.tabChatTabs.Controls.Add(this.tabAll);
+            this.tabChatTabs.Location = new System.Drawing.Point(12, 179);
+            this.tabChatTabs.Name = "tabChatTabs";
+            this.tabChatTabs.SelectedIndex = 0;
+            this.tabChatTabs.Size = new System.Drawing.Size(380, 22);
+            this.tabChatTabs.TabIndex = 5;
+            this.tabChatTabs.SelectedIndexChanged += new System.EventHandler(this.tabChatTabs_SelectedIndexChanged);
+            // 
+            // tabAll
+            // 
+            this.tabAll.Location = new System.Drawing.Point(4, 22);
+            this.tabAll.Name = "tabAll";
+            this.tabAll.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAll.Size = new System.Drawing.Size(372, 0);
+            this.tabAll.TabIndex = 0;
+            this.tabAll.Text = "All";
+            this.tabAll.UseVisualStyleBackColor = true;
+            // 
+            // tbChat
+            // 
+            this.tbChat.Location = new System.Drawing.Point(12, 200);
+            this.tbChat.Multiline = true;
+            this.tbChat.Name = "tbChat";
+            this.tbChat.ReadOnly = true;
+            this.tbChat.Size = new System.Drawing.Size(380, 157);
+            this.tbChat.TabIndex = 6;
+            // 
+            // tbChatInput
+            // 
+            this.tbChatInput.Enabled = false;
+            this.tbChatInput.Location = new System.Drawing.Point(12, 362);
+            this.tbChatInput.Name = "tbChatInput";
+            this.tbChatInput.Size = new System.Drawing.Size(318, 20);
+            this.tbChatInput.TabIndex = 7;
+            this.tbChatInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbChatInput_KeyUp);
+            // 
+            // btnSendChat
+            // 
+            this.btnSendChat.Enabled = false;
+            this.btnSendChat.Location = new System.Drawing.Point(336, 362);
+            this.btnSendChat.Name = "btnSendChat";
+            this.btnSendChat.Size = new System.Drawing.Size(56, 20);
+            this.btnSendChat.TabIndex = 8;
+            this.btnSendChat.Text = "Send";
+            this.btnSendChat.UseVisualStyleBackColor = true;
+            this.btnSendChat.Click += new System.EventHandler(this.btnSendChat_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(408, 162);
+            this.ClientSize = new System.Drawing.Size(408, 394);
+            this.Controls.Add(this.btnSendChat);
+            this.Controls.Add(this.tbChatInput);
+            this.Controls.Add(this.tbChat);
+            this.Controls.Add(this.tabChatTabs);
             this.Controls.Add(this.btnCreateAccount);
             this.Controls.Add(this.btnSignIn);
             this.Controls.Add(this.lblStatus);
@@ -116,6 +175,7 @@
             this.Name = "Form1";
             this.Text = "Test Client";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.tabChatTabs.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -130,6 +190,11 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnSignIn;
         private System.Windows.Forms.Button btnCreateAccount;
+        private System.Windows.Forms.TabControl tabChatTabs;
+        private System.Windows.Forms.TabPage tabAll;
+        private System.Windows.Forms.TextBox tbChat;
+        private System.Windows.Forms.TextBox tbChatInput;
+        private System.Windows.Forms.Button btnSendChat;
     }
 }
 

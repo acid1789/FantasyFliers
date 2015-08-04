@@ -13,9 +13,7 @@ namespace FFServer
         public enum FFTaskType
         {
         }
-
-        public new FFTaskType TaskType;
-
+        
         public new FFClient Client
         {
             get { return (FFClient)_client; }

@@ -31,7 +31,7 @@ namespace ServerCore
             _connectionsLock.ReleaseMutex();
         }
 
-        public Connection FindClient(int clientKey)
+        public Connection FindClient(uint clientKey)
         {
             _connectionsLock.WaitOne();
             Connection[] connections = _connections.ToArray();
@@ -78,5 +78,18 @@ namespace ServerCore
                 Thread.Sleep(10);
             }
         }
+
+        #region Accesssors
+        public Connection[] Clients
+        {
+            get
+            {
+                _connectionsLock.WaitOne();
+                Connection[] connections = _connections.ToArray();
+                _connectionsLock.ReleaseMutex();
+                return connections;
+            }
+        }
+        #endregion
     }
 }

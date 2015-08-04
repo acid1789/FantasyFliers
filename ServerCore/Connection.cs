@@ -37,7 +37,7 @@ namespace ServerCore
         protected MemoryStream _outgoingPacket;
         protected BinaryWriter _outgoingBW;
 
-        protected int _sessionKey;
+        protected uint _sessionKey;
         
         public Connection(Socket s)
         {
@@ -227,6 +227,11 @@ namespace ServerCore
                 bw.Write(encoded.Length);
                 bw.Write(encoded);
             }
+            else
+            {
+                int length = 0;
+                bw.Write(length);
+            }
         }
 
         #region Packet Construction
@@ -261,7 +266,7 @@ namespace ServerCore
             get { return (_socket != null && _socket.Connected); }
         }
 
-        public int SessionKey
+        public uint SessionKey
         {
             get { return _sessionKey; }
         }

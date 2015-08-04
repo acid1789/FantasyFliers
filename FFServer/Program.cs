@@ -13,7 +13,7 @@ namespace FFServer
         static void Main(string[] args)
         {
             LogThread.AlwaysPrintToConsole = true;
-            _server = new FFServer(1255, null, "127.0.0.1", 1789);
+            _server = new FFServer(1255, "server=127.0.0.1;uid=root;pwd=ugg$;database=ff_server;", "127.0.0.1", 1789);
 
             _server.Run();
 

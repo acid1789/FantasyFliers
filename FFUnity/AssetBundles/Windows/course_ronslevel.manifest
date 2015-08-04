@@ -1,0 +1,61 @@
+ManifestFileVersion: 0
+CRC: 2395303318
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 234949acc4937e8c85ec3cb8e1395683
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 308ca73650b7371c8f1a241195094dd1
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+- Class: 104
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9a3892b15217b9541bd5896c1eaf55fb, type: 3}
+- Class: 114
+  Script: {fileID: -619905303, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 1077351063, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 1997211142, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 01190646515f1b4418ec98a692b1f59b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 887613664d7dadf459e59f3fa5c77e0c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 127
+  Script: {instanceID: 0}
+- Class: 157
+  Script: {instanceID: 0}
+- Class: 258
+  Script: {instanceID: 0}
+Assets:
+- Assets/Game/Environments/RonsLevel/RonsLevel.unity
+Dependencies:
+- AssetBundles/Windows/env_ronslevel_pieces
