@@ -92,9 +92,9 @@
       <Project>{831FBE7F-4F21-479B-8188-B5EB00769611}</Project>
       <Name>FFNetwork</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServerCore\ServerCore.csproj">
-      <Project>{DE59F03B-351D-490B-AD42-20D21D0C57EE}</Project>
-      <Name>ServerCore</Name>
+    <ProjectReference Include="..\NetworkCore\NetworkCore.csproj">
+      <Project>{6877f982-bb8d-428e-b017-afb86a00be95}</Project>
+      <Name>NetworkCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

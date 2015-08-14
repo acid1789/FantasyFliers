@@ -15,7 +15,7 @@ namespace ServerCore
         public ServerBase(int listenPort, string dbConnectString)
         {
             // Start log thread
-            LogThread.Initialize();
+            LogThread log = new LogThread();
 
             // Start database thread
             if( dbConnectString != null )

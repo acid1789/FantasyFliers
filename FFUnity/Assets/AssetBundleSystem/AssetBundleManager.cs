@@ -343,8 +343,34 @@ public class AssetBundleManager : MonoBehaviour
 		}
 	}
 
-	// Load asset from the given assetBundle.
-	static public AssetBundleLoadAssetOperation LoadAssetAsync (string assetBundleName, string assetName, System.Type type)
+    static public Object LoadAsset(string assetBundleName, string assetName, System.Type type)
+    {
+        Object ret = null;
+#if UNITY_EDITOR
+        if (SimulateAssetBundleInEditor)
+        {
+            string[] assetPaths = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(assetBundleName, assetName);
+            if (assetPaths.Length == 0)
+            {
+                Debug.LogError("There is no asset with name \"" + assetName + "\" in " + assetBundleName);
+                return null;
+            }
+            
+            ret = AssetDatabase.LoadMainAssetAtPath(assetPaths[0]);
+        }
+        else
+#endif
+        {
+            LoadAssetBundle(assetBundleName);
+            string err;
+            LoadedAssetBundle bundle = AssetBundleManager.GetLoadedAssetBundle(assetBundleName, out err);
+            ret = bundle.m_AssetBundle.LoadAsset(assetName, type);
+        }
+        return ret;
+    }
+
+    // Load asset from the given assetBundle.
+    static public AssetBundleLoadAssetOperation LoadAssetAsync (string assetBundleName, string assetName, System.Type type)
 	{
 		AssetBundleLoadAssetOperation operation = null;
 #if UNITY_EDITOR

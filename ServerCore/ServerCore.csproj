@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ServerCore</RootNamespace>
     <AssemblyName>ServerCore</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,14 +40,11 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connection.cs" />
     <Compile Include="DatabaseThread.cs" />
-    <Compile Include="GameClient.cs" />
     <Compile Include="GameServer.cs" />
     <Compile Include="GlobalClient.cs" />
     <Compile Include="GlobalServerManager.cs" />
@@ -58,6 +56,12 @@
     <Compile Include="ServerBase.cs" />
     <Compile Include="TaskProcessor.cs" />
     <Compile Include="TCPServer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetworkCore\NetworkCore.csproj">
+      <Project>{6877f982-bb8d-428e-b017-afb86a00be95}</Project>
+      <Name>NetworkCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

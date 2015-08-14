@@ -47,8 +47,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Editor\AssetbundlesMenuItems.cs" />
+     <Compile Include="Assets\Editor\BuildMenu.cs" />
      <Compile Include="Assets\Editor\BuildScript.cs" />
      <Compile Include="Assets\Editor\EditorScript.cs" />
+     <None Include="Assets\Game\Loot\Templates\TemplateMap.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -63,6 +65,12 @@
  </Reference>
  <Reference Include="UnityEngine.Analytics">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="FFNetwork">
+ <HintPath>C:/TFS/FantasyFliers/FFUnity/Assets/Plugins/FFNetwork.dll</HintPath>
+ </Reference>
+ <Reference Include="NetworkCore">
+ <HintPath>C:/TFS/FantasyFliers/FFUnity/Assets/Plugins/NetworkCore.dll</HintPath>
  </Reference>
  <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
  <HintPath>C:/TFS/FantasyFliers/FFUnity/Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>

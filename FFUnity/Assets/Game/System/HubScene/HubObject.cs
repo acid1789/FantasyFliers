@@ -17,6 +17,10 @@ public class HubObject : MonoBehaviour
 
         Button raceButton = UICanvas.FindChild("RaceButton").GetComponent<Button>();
         raceButton.onClick.AddListener(RaceButton);
+
+        Text money = UICanvas.FindChild("Money").GetComponent<Text>();
+        if( Globals.Network != null )
+            money.text = "Money: " + Globals.Network.SoftCurrency.ToString("N0");
     }
 
     // Update is called once per frame

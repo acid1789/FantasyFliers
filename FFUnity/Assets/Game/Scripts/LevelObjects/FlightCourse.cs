@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class FlightCourse : MonoBehaviour {
+public class FlightCourse : MonoBehaviour
+{
 
     public enum FlightMode
     {
@@ -15,30 +17,45 @@ public class FlightCourse : MonoBehaviour {
         Test
     }
 
+    public int CourseID;
     public GameObject[] StartingPoints;
     public int LapCount;
     public FlightMode GameMode;
+    public float ParTimeSeconds;
+    public int TimeScoreBase;
+    public int TimeScoreModifier;
+    public LootTable LootTable;
 
     GameCamera[] _cameras;
     Drone _playerDrone;
-    
+
     Obstacle _finishLine;
     List<Obstacle> _obstacles;
     List<int> _orderedObstacles;
     List<int> _requiredObstacles;
     List<int> _finishedObstacles;
+    List<Obstacle> _finishedObstacleObjects;
+    List<LootMarker> _lootMarkers;
 
     GameObject _countdownUI;
     GameObject _hudUI;
+    GameObject _flightUI;
     HudUI _hud;
     bool _flightLocked;
 
     int _nextObstacle;
-    int _score;
     int _lap;
-    
-	// Use this for initialization
-	void Start ()
+    DateTime _lapStart;
+    List<TimeSpan> _lapTimes;
+    TimeSpan _bestTime;
+
+    int _score;
+    int _timeScore;
+
+    GameObject _scoreScreen;
+
+    // Use this for initialization
+    void Start()
     {
 #if UNITY_EDITOR
         Globals.PlayInEditor();
@@ -48,7 +65,7 @@ public class FlightCourse : MonoBehaviour {
         SetupDrones();
         SetupHud();
         StartCountdown();
-	}
+    }
 
     void DestroyLevel()
     {
@@ -60,12 +77,18 @@ public class FlightCourse : MonoBehaviour {
             _hud = null;
         }
 
+        if(_flightUI != null)
+        {
+            DestroyObject(_flightUI);
+            _flightUI = null;
+        }
+
         _finishLine = null;
-        _obstacles.Clear();        
+        _obstacles.Clear();
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         // Update countdown
         if (_countdownUI != null)
@@ -75,6 +98,7 @@ public class FlightCourse : MonoBehaviour {
             {
                 _flightLocked = false;
                 _hud.StartFlight();
+                _lapStart = DateTime.Now;
             }
             if (cdui.IsDone)
             {
@@ -84,15 +108,22 @@ public class FlightCourse : MonoBehaviour {
         }
 
         // Update the flight controller
-        if( !_flightLocked )
+        if (!_flightLocked)
             Globals.FlightController.Update();
-	}
+    }
+
+    void FixedUpdate()
+    {
+        if (!_flightLocked)
+            Globals.FlightController.FixedUpdate();
+    }
 
     void SetupCourse()
     {
         _obstacles = new List<Obstacle>();
         _orderedObstacles = new List<int>();
         _requiredObstacles = new List<int>();
+        _lootMarkers = new List<LootMarker>();
 
         // Find the start line && finish line
         foreach (Transform child in transform)
@@ -125,12 +156,16 @@ public class FlightCourse : MonoBehaviour {
                     _orderedObstacles.Add(obstacle.OrderID);
 
                 // Add to the required list
-                if( obstacle.Required && !obstacle.MergeWithPrevious)
+                if (obstacle.Required && !obstacle.MergeWithPrevious)
                     _requiredObstacles.Add(obstacle.OrderID);
+
+                LootMarker lm = child.GetComponent<LootMarker>();
+                if( lm != null )
+                    _lootMarkers.Add(lm);
             }
         }
 
-        if( _finishLine == null )
+        if (_finishLine == null)
             throw new System.Exception("Finish Line is missing");
     }
 
@@ -149,16 +184,23 @@ public class FlightCourse : MonoBehaviour {
                 break;
         }
         _hud = _hudUI.GetComponent<HudUI>();
+
+        if (Globals.FlightController.GetAxisInput().GetUIPrefab() != null)
+        {
+            Debug.Log("Instantiating Flight UI");
+            _flightUI = (GameObject)Instantiate(Globals.FlightController.GetAxisInput().GetUIPrefab());
+            Globals.FlightController.GetAxisInput().SetUI(_flightUI);
+        }
     }
 
     void SetupDrones()
     {
-        if(StartingPoints.Length <= 0 )
+        if (StartingPoints.Length <= 0)
             throw new System.Exception("No starting points");
 
         // Spawn the player drone
         GameObject playerDrone = (GameObject)GameObject.Instantiate(Globals.Drones[0].Prefab, StartingPoints[0].transform.position, StartingPoints[0].transform.rotation);
-        _playerDrone = playerDrone.GetComponent<Drone>();        
+        _playerDrone = playerDrone.GetComponent<Drone>();
 
         // Spawn AI Drones
 
@@ -166,7 +208,7 @@ public class FlightCourse : MonoBehaviour {
         _cameras = new GameCamera[Globals.Cameras.Length];
         for (int i = 0; i < _cameras.Length; i++)
         {
-            GameObject cam = (GameObject)Object.Instantiate(Globals.Cameras[i].Prefab);
+            GameObject cam = (GameObject)Instantiate(Globals.Cameras[i].Prefab);
             GameCamera gc = cam.GetComponent<GameCamera>();
             gc.Setup(this, _playerDrone);
             cam.SetActive(false);
@@ -184,7 +226,11 @@ public class FlightCourse : MonoBehaviour {
         // Reset level stuff
         _nextObstacle = 0;
         _score = 0;
+        _timeScore = 0;
         _finishedObstacles = new List<int>();
+        _finishedObstacleObjects = new List<Obstacle>();
+
+        _lapTimes = new List<TimeSpan>();
 
         // Create the countdown UI object
         _countdownUI = (GameObject)Instantiate(Globals.UI_Countdown);
@@ -235,6 +281,7 @@ public class FlightCourse : MonoBehaviour {
     {
         obstacle.Finish();
         _finishedObstacles.Add(obstacle.OrderID);
+        _finishedObstacleObjects.Add(obstacle);
 
         // Apply Score
         _score += obstacle.Score;
@@ -242,6 +289,9 @@ public class FlightCourse : MonoBehaviour {
 
     void FinishLap()
     {
+        TimeSpan lapTime = DateTime.Now - _lapStart;
+        _lapTimes.Add(lapTime);
+
         _hud.StopFlight();
         _lap++;
         if (_lap < LapCount)
@@ -254,6 +304,7 @@ public class FlightCourse : MonoBehaviour {
                     obstacle.Reset();
             }
             _hud.StartFlight();
+            _lapStart = DateTime.Now;
         }
         else
         {
@@ -264,8 +315,82 @@ public class FlightCourse : MonoBehaviour {
 
     void ShowScoreScreen()
     {
-        // For now, go to hub
-        Application.LoadLevel("HubScene");
-        DestroyLevel();
+        // Disable flight control
+        _flightLocked = true;
+
+        // Find the best lap time
+        double bestTime = double.MaxValue;
+        foreach (TimeSpan span in _lapTimes)
+        {
+            if (span.TotalMilliseconds < bestTime)
+            {
+                bestTime = span.TotalMilliseconds;
+                _bestTime = span;
+            }
+        }
+
+        // Spawn the score screen
+        _scoreScreen = (GameObject)Instantiate(Globals.UI_ScoreScreen);
+        ScoreScreenUI ss = _scoreScreen.GetComponent<ScoreScreenUI>();
+        ss.SetFlightCourse(this);
+
+#if UNITY_EDITOR
+        if (Globals.Network == null)
+        {
+            // Playing the course in the editor wont be connected to the server, add in fakery
+            ss.FillInScores(_score, 0);
+        }
+        else
+#endif
+        {
+            // Send the result to the server
+            Globals.Network.FlightCourseFinished(CourseID, bestTime, LootMarkersCollected, _score);
+        }
     }
+
+    #region Accessors
+    public TimeSpan BestTime
+    {
+        get { return _bestTime; }
+    }
+
+    public int FinishedObstacleCount
+    {
+        get { return _finishedObstacleObjects.Count; }
+    }
+
+    public int Score
+    {
+        get { return _score; }
+    }
+
+    public int TimeScore
+    {
+        get { return _timeScore; }
+    }
+
+    public int TotalScore
+    {
+        get { return _score + _timeScore; }
+    }
+
+    public int LootMarkersCollected
+    {
+        get
+        {
+            int count = 0;
+            foreach (LootMarker lm in _lootMarkers)
+            {
+                if( lm.Completed )
+                    count++;
+            }
+            return count;
+        }
+    }
+
+    public int LootMarkersMax
+    {
+        get { return _lootMarkers.Count; }
+    }
+    #endregion
 }

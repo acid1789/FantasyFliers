@@ -17,7 +17,7 @@ namespace FFServer
 
             _server.Run();
 
-            LogThread.Shutdown();
+            LogThread.GetLog().Shutdown();
         }
 
         #region Accessors

@@ -18,7 +18,7 @@ namespace TestClient
 
         public event EventHandler SignInComplete;
         public event EventHandler OnChatChannels;
-        public event EventHandler<ServerCore.ChatMessageArgs> OnChatMessage;
+        public event EventHandler<NetworkCore.ChatMessageArgs> OnChatMessage;
 
         public FFCManager(string address, int port)
         {

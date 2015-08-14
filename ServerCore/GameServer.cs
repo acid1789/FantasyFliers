@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net.Sockets;
+using NetworkCore;
 
 namespace ServerCore
 {
@@ -30,6 +31,12 @@ namespace ServerCore
             client.OnChatMessage += new EventHandler<ChatMessageArgs>(client_OnChatMessage);
 
             InputThread.AddConnection(client);
+        }
+
+        public virtual void NewAuthorizedClient(GameClient client)
+        {
+            // Get the chat info
+            FetchChatInfo(client);
         }
 
         #region Server Tasks

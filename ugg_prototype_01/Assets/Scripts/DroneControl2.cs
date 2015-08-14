@@ -55,6 +55,8 @@ public class DroneControl2 : MonoBehaviour
 
     private bool landed = false;
 
+    private bool arcadeMode = true;
+
     // Use this for initialization
     void Start()
     {
@@ -71,20 +73,27 @@ public class DroneControl2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(arcadeMode)
+            ctrlThrottle = Input.GetAxis("DroneThrottle");
+        else
+            ctrlThrottle = Mathf.Max(0f, Input.GetAxis("DroneThrottle"));
+
+        ctrlYaw = Input.GetAxis("DroneYaw");
+        ctrlRoll = Input.GetAxis("DroneRoll");
+        ctrlPitch = Input.GetAxis("DronePitch");
 
         //TODO: This triggers a bug in the follow cam
         ///*
         if (Input.GetButtonUp("DroneReset"))
         {
             Application.LoadLevel(Application.loadedLevel);
-            //DroneReset();
-
-            //GameObject obj = GameObject.Find("Course");
-            //ObstacleCourse course = (ObstacleCourse)obj.GetComponent(typeof(ObstacleCourse));
-            //course.ResetCourse();
-
         }
         //*/
+
+        if(Input.GetButtonUp("ArcadeModeToggle"))
+        {
+            arcadeMode = !arcadeMode;
+        }
 
         // Used to calculate pitch, volume AND blade spin...
         float mainBuzzAmt = Mathf.Min(1f, Mathf.Max(ctrlThrottle, buzzStabilityForce));
@@ -101,69 +110,101 @@ public class DroneControl2 : MonoBehaviour
         }
 
         //Debug Draw
-        //Debug.DrawLine(transform.position, transform.position + desiredUp * 2f, Color.green);
-        //Debug.DrawLine(transform.position, transform.position + transform.up * 2f, Color.red);
+        Debug.DrawLine(transform.position, transform.position + desiredUp * 4f, Color.green);
+        Debug.DrawLine(transform.position, transform.position + transform.up * 4f, Color.red);
     }
 
     void FixedUpdate()
     {
-
+        Quaternion q;
         desiredUp = Vector3.up;
 
-        ctrlThrottle = Input.GetAxis("DroneThrottle");
-        ctrlYaw = Input.GetAxis("DroneYaw");
-        ctrlRoll = Input.GetAxis("DroneRoll");
-        ctrlPitch = Input.GetAxis("DronePitch");
-
-        rb.AddForce(0, -(rb.velocity.y + Physics.gravity.y), 0, ForceMode.Acceleration);
-        //Control Throttle    
-        rb.AddRelativeForce(Vector3.up * maxCtrlThrottle * ctrlThrottle * Time.fixedDeltaTime);
-
-
-        //Control Yaw
-        //Auto brake yaw rotation
-        if (Mathf.Abs(ctrlYaw) < autoBrakeYaw)
+        if(arcadeMode)
         {
-            ctrlYaw = 0;
-            //TODO: This should be done with a call to AddTorque instead.
-            rb.angularVelocity = new Vector3(rb.angularVelocity.x, rb.angularVelocity.y * .9f, rb.angularVelocity.z);
+            
+            if (!landed)
+                rb.AddForce(0, -(rb.velocity.y + Physics.gravity.y), 0, ForceMode.Acceleration);
+
+            //Control Throttle    
+            rb.AddForce(Vector3.up * maxCtrlThrottle * ctrlThrottle * Time.fixedDeltaTime);
+
+            //Control Yaw
+            //Auto brake yaw rotation
+            if (Mathf.Abs(ctrlYaw) < autoBrakeYaw)
+            {
+                ctrlYaw = 0;
+                //TODO: This should be done with a call to AddTorque instead.
+                rb.angularVelocity = new Vector3(rb.angularVelocity.x, rb.angularVelocity.y * .9f, rb.angularVelocity.z);
+            }
+
+            rb.AddTorque(Vector3.up * maxCtrlYaw * ctrlYaw * Time.fixedDeltaTime);
+
+            //Control Pitch
+            desiredUp = Quaternion.AngleAxis(ctrlPitch * maxCtrlPitch, -transform.right) * desiredUp;
+
+            rb.AddTorque(Vector3.right * ctrlPitch * maxCtrlPitch * Time.fixedDeltaTime);
+
+            rb.AddForce(Vector3.Cross(Vector3.up, transform.right) * ctrlPitch * maxCtrlThrottle * Time.fixedDeltaTime);
+            
+
+            //Control Roll
+            desiredUp = Quaternion.AngleAxis(ctrlRoll * maxCtrlRoll, -transform.forward) * desiredUp;
+
+            rb.AddTorque(Vector3.forward * ctrlRoll * maxCtrlPitch * Time.fixedDeltaTime);
+
+            rb.AddForce(Vector3.Cross(Vector3.up, transform.forward) * ctrlRoll * maxCtrlThrottle * Time.fixedDeltaTime);
+            
+
+        }
+        else
+        {
+            //Control Throttle    
+            rb.AddRelativeForce(Vector3.up * maxCtrlThrottle * ctrlThrottle * Time.fixedDeltaTime);
+
+            //Control Yaw
+            //Auto brake yaw rotation
+            if (Mathf.Abs(ctrlYaw) < autoBrakeYaw)
+            {
+                ctrlYaw = 0;
+                //TODO: This should be done with a call to AddTorque instead.
+                rb.angularVelocity = new Vector3(rb.angularVelocity.x, rb.angularVelocity.y * .9f, rb.angularVelocity.z);
+            }
+
+            rb.AddRelativeTorque(Vector3.up * maxCtrlThrottle * ctrlYaw * Time.fixedDeltaTime);
+
+            //Control Pitch
+            q = Quaternion.AngleAxis(ctrlPitch * maxCtrlPitch, -transform.right);
+            desiredUp = q * desiredUp;
+
+            //add some slight Pitch->forward velocity
+            rb.AddRelativeForce(-Vector3.forward * ctrlPitch * maxCtrlThrottle * Time.fixedDeltaTime);
+
+            //Control Roll
+            q = Quaternion.AngleAxis(ctrlRoll * maxCtrlRoll, -transform.forward);
+            desiredUp = q * desiredUp;    
         }
 
-        rb.AddRelativeTorque(Vector3.up * maxCtrlYaw * ctrlYaw * Time.fixedDeltaTime);
+        ////Turbulence
+        //if (Random.value < chanceOfTurbulence)
+        //{
+        //    Vector3 wind = Vector3.down;
+        //    q = Quaternion.AngleAxis(Random.Range(0, 360), transform.right);
+        //    wind = q * wind;
+        //    q = Quaternion.AngleAxis(Random.Range(0, 360), transform.forward);
+        //    wind = q * wind;
 
-        //Control Pitch
-        Quaternion q = Quaternion.AngleAxis(ctrlPitch * maxCtrlPitch, -transform.right);
-        desiredUp = q * desiredUp;
+        //    float maxTurb = Mathf.Min(10f, Mathf.Max(transform.position.y / 2f, turbulenceMaxStrength));
+        //    wind *= Random.Range(0.1f, maxTurb);
 
-        //add some slight Pitch->forward velocity
-        rb.AddRelativeForce(-Vector3.forward * ctrlPitch * pitchToFwdVel * Time.fixedDeltaTime);
+        //    Vector3 pos = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) + transform.position;
 
-        //Control Roll
-        q = Quaternion.AngleAxis(ctrlRoll * maxCtrlRoll, -transform.forward);
-        desiredUp = q * desiredUp;
+        //    rb.AddForceAtPosition(wind, pos);
+        //}
 
-        //Turbulence
-        if (Random.value < chanceOfTurbulence)
-        {
-            Vector3 wind = Vector3.down;
-            q = Quaternion.AngleAxis(Random.Range(0, 360), transform.right);
-            wind = q * wind;
-            q = Quaternion.AngleAxis(Random.Range(0, 360), transform.forward);
-            wind = q * wind;
-
-            float maxTurb = Mathf.Min(10f, Mathf.Max(transform.position.y / 2f, turbulenceMaxStrength));
-            wind *= Random.Range(0.1f, maxTurb);
-
-            Vector3 pos = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) + transform.position;
-
-            rb.AddForceAtPosition(wind, pos);
-        }
-
-        //Stabalizer
+        //Stabilizer
         Vector3 predictedUp = Quaternion.AngleAxis(rb.angularVelocity.magnitude * Mathf.Rad2Deg * stability / stabilitySpeed, rb.angularVelocity) * transform.up;
 
         Vector3 torqueVector = Vector3.Cross(predictedUp, desiredUp);
-        buzzStabilityForce = torqueVector.magnitude;
 
         rb.AddTorque(torqueVector * stabilitySpeed * stabilitySpeed);
 

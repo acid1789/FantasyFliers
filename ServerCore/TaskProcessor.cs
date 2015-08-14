@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using NetworkCore;
 
 namespace ServerCore
 {    
@@ -14,6 +15,20 @@ namespace ServerCore
         protected Connection _client;
         protected object _args;
 
+        public Task()
+        {
+        }
+
+        public Task(int type)
+        {
+            Type = type;
+        }
+        
+        public object Args
+        {
+            get { return _args; }
+            set { _args = value; }
+        }
     }
 
     public abstract class TaskProcessor
@@ -21,6 +36,9 @@ namespace ServerCore
         List<Task> _tasks;
         Mutex _tasksLock;
         bool _processing;
+
+        long _lastTicks;
+        long _ticksModified;
 
         DatabaseThread _db;
 
@@ -46,6 +64,7 @@ namespace ServerCore
             DBQuery q = (DBQuery)sender;
 
             _pqLock.WaitOne();
+            LogInterface.Log("Finishing Query with key: " + q.Key, LogInterface.LogMessageType.Debug, true);
             Task task = _pendingQueries[q.Key];
             _pendingQueries.Remove(q.Key);
             _pqLock.ReleaseMutex();
@@ -55,17 +74,34 @@ namespace ServerCore
                 AddTask(task);
         }
 
-        public DBQuery AddDBQuery(string sql, Task task)
+        long UniqueKey()
         {
-            long key = DateTime.Now.Ticks;
-            DBQuery q = new DBQuery(sql, true, key);
-            _db.AddQuery(q);
+            long ticks = DateTime.Now.Ticks;
+            long key = ticks;
+            if (_lastTicks == ticks)
+                key += ++_ticksModified;
+            else
+                _ticksModified = 0;
+            _lastTicks = ticks;
+            return key;
+        }
 
+        public DBQuery AddDBQuery(string sql, Task task, bool read = true)
+        {
+            if( task == null )
+                task = new Task(-1);
+
+            long key = UniqueKey();
+            DBQuery q = new DBQuery(sql, read, key);
+            
             task.Query = q;
 
             _pqLock.WaitOne();
+            LogInterface.Log("Adding Query with key: " + key, LogInterface.LogMessageType.Debug, true);
             _pendingQueries[key] = task;
             _pqLock.ReleaseMutex();
+
+            _db.AddQuery(q);
             return q;
         }
 

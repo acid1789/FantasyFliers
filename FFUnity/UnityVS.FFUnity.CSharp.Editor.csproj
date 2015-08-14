@@ -108,6 +108,12 @@
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
+    <Reference Include="FFNetwork">
+      <HintPath>Assets\Plugins\FFNetwork.dll</HintPath>
+    </Reference>
+    <Reference Include="NetworkCore">
+      <HintPath>Assets\Plugins\NetworkCore.dll</HintPath>
+    </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Assets\UnityVS\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
@@ -126,8 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\AssetbundlesMenuItems.cs" />
+    <Compile Include="Assets\Editor\BuildMenu.cs" />
     <Compile Include="Assets\Editor\BuildScript.cs" />
     <Compile Include="Assets\Editor\EditorScript.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Game\Loot\Templates\TemplateMap.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

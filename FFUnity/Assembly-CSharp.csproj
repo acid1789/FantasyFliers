@@ -51,40 +51,40 @@
      <Compile Include="Assets\AssetBundleSystem\BaseLoader.cs" />
      <Compile Include="Assets\Game\Scripts\CameraControl\ChaseCamera.cs" />
      <Compile Include="Assets\Game\Scripts\CameraControl\GameCamera.cs" />
+     <Compile Include="Assets\Game\Scripts\ControllerMapping\AxisInput.cs" />
+     <Compile Include="Assets\Game\Scripts\ControllerMapping\DualVirtualJoysticks.cs" />
+     <Compile Include="Assets\Game\Scripts\ControllerMapping\KeyboardMouse.cs" />
+     <Compile Include="Assets\Game\Scripts\ControllerMapping\Xbox360Controller.cs" />
      <Compile Include="Assets\Game\Scripts\Drone.cs" />
+     <Compile Include="Assets\Game\Scripts\DroneControl\ArcadeFlightController.cs" />
      <Compile Include="Assets\Game\Scripts\DroneControl\FlightController.cs" />
+     <Compile Include="Assets\Game\Scripts\DroneControl\RealisticFlightController.cs" />
      <Compile Include="Assets\Game\Scripts\DroneControl\RonsDroneScript.cs" />
      <Compile Include="Assets\Game\Scripts\Globals.cs" />
      <Compile Include="Assets\Game\Scripts\LevelLoader.cs" />
      <Compile Include="Assets\Game\Scripts\LevelObjects\CourseMarker.cs" />
      <Compile Include="Assets\Game\Scripts\LevelObjects\FlightCourse.cs" />
+     <Compile Include="Assets\Game\Scripts\LevelObjects\LootMarker.cs" />
      <Compile Include="Assets\Game\Scripts\LevelObjects\Obstacle.cs" />
+     <Compile Include="Assets\Game\Scripts\LevelObjects\SmallPortal.cs" />
      <Compile Include="Assets\Game\Scripts\LevelObjects\TriggerScript.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\BladeProp.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\CamSwitch.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\CountdownTimer.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\Drone.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\DroneControl.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\DroneControl2.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\DroneFollow.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\DroneHover.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\DronePart.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\HubObject.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\LookAt.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\LootBox.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\LootDropManager.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\LootMarker.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\Obstacle.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\ObstacleCourse.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\ObstaclePortal.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\RaceManager.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\Stabilize_3D.cs" />
-     <Compile Include="Assets\Game\Scripts\OldDemoScripts\StopWatchTimer.cs" />
+     <Compile Include="Assets\Game\Scripts\Loot\Inventory.cs" />
+     <Compile Include="Assets\Game\Scripts\Loot\InventoryItem.cs" />
+     <Compile Include="Assets\Game\Scripts\Loot\ItemTemplate.cs" />
+     <Compile Include="Assets\Game\Scripts\Loot\ItemTemplateManager.cs" />
+     <Compile Include="Assets\Game\Scripts\Loot\LootRange.cs" />
+     <Compile Include="Assets\Game\Scripts\Loot\LootTable.cs" />
+     <Compile Include="Assets\Game\Scripts\Network\NetLogger.cs" />
+     <Compile Include="Assets\Game\Scripts\Network\NetworkManager.cs" />
      <Compile Include="Assets\Game\Scripts\UI\CountdownUI.cs" />
      <Compile Include="Assets\Game\Scripts\UI\HudUI.cs" />
+     <Compile Include="Assets\Game\Scripts\UI\ScoreScreenUI.cs" />
+     <Compile Include="Assets\Game\Scripts\UI\SignInUI.cs" />
      <Compile Include="Assets\Game\Scripts\UI\TimeTrialHudUI.cs" />
+     <Compile Include="Assets\Game\Scripts\UI\VirtualJoystickUI.cs" />
      <Compile Include="Assets\Game\System\HubScene\HubObject.cs" />
      <Compile Include="Assets\Game\System\Startup Scene\Startup.cs" />
+     <None Include="Assets\Game\Loot\Templates\TemplateMap.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -93,6 +93,12 @@
  </Reference>
  <Reference Include="UnityEngine.Analytics">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="FFNetwork">
+ <HintPath>C:/TFS/FantasyFliers/FFUnity/Assets/Plugins/FFNetwork.dll</HintPath>
+ </Reference>
+ <Reference Include="NetworkCore">
+ <HintPath>C:/TFS/FantasyFliers/FFUnity/Assets/Plugins/NetworkCore.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

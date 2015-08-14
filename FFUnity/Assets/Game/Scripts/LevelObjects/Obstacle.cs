@@ -53,4 +53,9 @@ public class Obstacle : MonoBehaviour {
     {
         get { return Random.Range(ScoreMin, ScoreMax); }
     }
+
+    public bool Completed
+    {
+        get { return _finished; }
+    }
 }

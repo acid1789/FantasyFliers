@@ -4,20 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.IO;
+using NetworkCore;
 
 namespace ServerCore
 {
-    public static class LogThread
+    public class LogThread : LogInterface
     {
-        public enum LogMessageType
-        {
-            Normal,
-            System,
-            Game,
-            Debug,
-            Error
-        }
-
         class LogEntry
         {
             LogMessageType _type;
@@ -48,10 +40,8 @@ namespace ServerCore
         static Thread _logThread;
         static List<LogEntry> _entries;
         static Mutex _entriesLock;
-
-        static bool _alwaysPrintToConsole = false;
-
-        public static void Initialize()
+        
+        public LogThread() : base()
         {
             if (_logThread == null)
             {
@@ -67,7 +57,7 @@ namespace ServerCore
             }
         }
 
-        public static void Shutdown()
+        public void Shutdown()
         {
             if (_logThread != null)
             {
@@ -78,11 +68,10 @@ namespace ServerCore
                 _entries.Clear();
                 _entries = null;
                 _entriesLock.ReleaseMutex();
-                _entriesLock.Dispose();
             }
         }
 
-        public static void Log(string message, LogMessageType type = LogMessageType.Normal, bool logToConsole = false)
+        public override void Log(LogMessageType type, bool logToConsole, string message)
         {
             if (_entries != null)
             {
@@ -92,6 +81,8 @@ namespace ServerCore
                 _entriesLock.ReleaseMutex();
             }
         }
+
+        public static LogThread GetLog() { return (LogThread)_log; }    
 
         static string LogFileName()
         {
@@ -138,11 +129,6 @@ namespace ServerCore
                 Thread.Sleep(100);
             }
         }
-
-        public static bool AlwaysPrintToConsole
-        {
-            get { return _alwaysPrintToConsole; }
-            set { _alwaysPrintToConsole = value; }
-        }
+        
     }
 }

@@ -1,0 +1,6 @@
+5000,TestAccessory
+1000,TestBattery
+2000,TestCamera
+3000,TestMotor
+1,TestFrame
+4000,TestProp

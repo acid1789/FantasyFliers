@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using NetworkCore;
 
 namespace ServerCore
 {
@@ -16,18 +17,15 @@ namespace ServerCore
             ChatBlockList_Process,
             ChatInfo_Process,
             ChatMessage,
+            FlagAccount,
+
+            Last
         }
         
         public GameClient Client
         {
             get { return (GameClient)_client; }
             set { _client = value; }
-        }
-
-        public object Args
-        {
-            get { return _args; }
-            set { _args = value; }
         }
     }
 
@@ -82,8 +80,8 @@ namespace ServerCore
                 client.HardCurrency = args.HardCurrency;
                 client.DisplayName = args.DisplayName;
 
-                // Join chat
-                _server.FetchChatInfo(client);
+                // Let the server do new client stuff
+                _server.NewAuthorizedClient(client);
             }
         }
 

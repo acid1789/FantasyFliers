@@ -46,7 +46,7 @@ public class ChaseCamera : GameCamera {
 
     void SetTarget()
     {
-        Vector3 droneDir = Quaternion.AngleAxis(ElevationAngle, _drone.transform.right) * _drone.transform.forward;
+        Vector3 droneDir = Quaternion.AngleAxis(ElevationAngle, Vector3.Cross(Vector3.up, _drone.transform.forward)) * Globals.FlightController.DroneForwardMovementVector;
         _targetPosition = _drone.transform.position + (droneDir * -_drone.ChaseDistance);         // Negative distance to go behind the drone instead of in front
         _targetRotation = Quaternion.LookRotation(droneDir, Vector3.up);
     }

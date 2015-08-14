@@ -1,9 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityVS.FFUnity.CSharp", "UnityVS.FFUnity.CSharp.csproj", "{D280E970-65AA-E033-ED29-6ADFA2CABDE4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{831FBE7F-4F21-479B-8188-B5EB00769611} = {831FBE7F-4F21-479B-8188-B5EB00769611}
+		{6877F982-BB8D-428E-B017-AFB86A00BE95} = {6877F982-BB8D-428E-B017-AFB86A00BE95}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityVS.FFUnity.CSharp.Editor", "UnityVS.FFUnity.CSharp.Editor.csproj", "{B0E1D831-B288-E692-6B91-F218284D980C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFNetwork", "..\FFNetwork\FFNetwork.csproj", "{831FBE7F-4F21-479B-8188-B5EB00769611}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkCore", "..\NetworkCore\NetworkCore.csproj", "{6877F982-BB8D-428E-B017-AFB86A00BE95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +29,14 @@ Global
 		{B0E1D831-B288-E692-6B91-F218284D980C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0E1D831-B288-E692-6B91-F218284D980C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0E1D831-B288-E692-6B91-F218284D980C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{831FBE7F-4F21-479B-8188-B5EB00769611}.Debug|Any CPU.ActiveCfg = Debug_Unity|Any CPU
+		{831FBE7F-4F21-479B-8188-B5EB00769611}.Debug|Any CPU.Build.0 = Debug_Unity|Any CPU
+		{831FBE7F-4F21-479B-8188-B5EB00769611}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{831FBE7F-4F21-479B-8188-B5EB00769611}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6877F982-BB8D-428E-B017-AFB86A00BE95}.Debug|Any CPU.ActiveCfg = Debug_Unity|Any CPU
+		{6877F982-BB8D-428E-B017-AFB86A00BE95}.Debug|Any CPU.Build.0 = Debug_Unity|Any CPU
+		{6877F982-BB8D-428E-B017-AFB86A00BE95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6877F982-BB8D-428E-B017-AFB86A00BE95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

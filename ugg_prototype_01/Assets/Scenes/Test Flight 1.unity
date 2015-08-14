@@ -895,6 +895,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 6567808, guid: 5dcdddcea2964914692b116420d51940, type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500938, guid: 5dcdddcea2964914692b116420d51940, type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5dcdddcea2964914692b116420d51940, type: 2}
   m_IsPrefabParent: 0
@@ -1396,6 +1404,18 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 422778, guid: 5dcdddcea2964914692b116420d51940, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500938, guid: 5dcdddcea2964914692b116420d51940, type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6567808, guid: 5dcdddcea2964914692b116420d51940, type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5dcdddcea2964914692b116420d51940, type: 2}
   m_IsPrefabParent: 0
@@ -1409,7 +1429,7 @@ BoxCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 851015058}
-  m_Material: {fileID: 13400000, guid: 32a58da04e697cc49b5ab935cab3a6d9, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2014,6 +2034,18 @@ Prefab:
       propertyPath: m_Name
       value: Arm 2
       objectReference: {fileID: 0}
+    - target: {fileID: 422778, guid: 5dcdddcea2964914692b116420d51940, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500938, guid: 5dcdddcea2964914692b116420d51940, type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6567808, guid: 5dcdddcea2964914692b116420d51940, type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5dcdddcea2964914692b116420d51940, type: 2}
   m_IsPrefabParent: 0
@@ -2257,7 +2289,7 @@ BoxCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1475128415}
-  m_Material: {fileID: 13400000, guid: 32a58da04e697cc49b5ab935cab3a6d9, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2336,7 +2368,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1565966451}
   serializedVersion: 2
-  m_Mass: .699999988
+  m_Mass: 1
   m_Drag: .100000001
   m_AngularDrag: .0500000007
   m_UseGravity: 1
@@ -2446,7 +2478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d91f3691fa49daa4daf76100f9cbb566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCtrlThrottle: 1600
+  maxCtrlThrottle: 1000
   maxCtrlYaw: 750
   maxCtrlRoll: 50
   maxCtrlPitch: 50
@@ -2548,6 +2580,14 @@ Prefab:
     - target: {fileID: 130308, guid: 5dcdddcea2964914692b116420d51940, type: 2}
       propertyPath: m_Name
       value: Arm 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500938, guid: 5dcdddcea2964914692b116420d51940, type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6567808, guid: 5dcdddcea2964914692b116420d51940, type: 2}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5dcdddcea2964914692b116420d51940, type: 2}
@@ -2960,7 +3000,7 @@ CapsuleCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2020675827}
-  m_Material: {fileID: 13400000, guid: 32a58da04e697cc49b5ab935cab3a6d9, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: .5

@@ -17,7 +17,7 @@ public class LootDropManager : MonoBehaviour {
 
             prefab.rarity = marker.possibleRarities[rarityIndex];
 
-            LootBox drop = (LootBox)Instantiate(prefab, marker.transform.position, Quaternion.identity);
+            Instantiate(prefab, marker.transform.position, Quaternion.identity);
 
             marker.GetComponent<Renderer>().enabled = false;
 

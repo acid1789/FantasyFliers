@@ -76,7 +76,7 @@ public class DroneControl : MonoBehaviour {
 			//Test Reset Pitch
 			//transform.Rotate(-eulerRot.x, 0, 0);
 
-			float pitchAngle = eulerRot.x;
+			//float pitchAngle = eulerRot.x;
 			if (pitchRot > 0 && rb.angularVelocity.x > 0) {
 				rb.AddRelativeForce (Vector3.right * autoCorrectPitchSpeed);
 			}

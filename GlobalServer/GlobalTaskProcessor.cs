@@ -21,12 +21,6 @@ namespace GlobalServer
             get { return (GlobalClient)_client; }
             set { _client = value; }
         }
-
-        public object Args
-        {
-            get { return _args; }
-            set { _args = value; }
-        }
     }
 
     class PendingQuery

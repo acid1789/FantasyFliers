@@ -148,7 +148,7 @@ namespace ServerCore
         void ExecuteQuery(DBQuery q)
         {
             LogThread.Log(string.Format("ExecuteQuery - {0}", q.SqlString), LogThread.LogMessageType.Debug);
-            MySqlCommand cmd = new MySqlCommand(q.SqlString, _sql);;
+            MySqlCommand cmd = new MySqlCommand(q.SqlString, _sql);
             if (q.Read)
             {
                 MySqlDataReader reader = cmd.ExecuteReader();

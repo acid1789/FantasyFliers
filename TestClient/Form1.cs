@@ -52,7 +52,7 @@ namespace TestClient
             tbPassword.Text = "test";
         }
 
-        private void _ffcm_OnChatMessage(object sender, ServerCore.ChatMessageArgs e)
+        private void _ffcm_OnChatMessage(object sender, NetworkCore.ChatMessageArgs e)
         {
             IncommingChatMessage((ChatChannel)e.Channel, e.Message, e.Sender);
         }

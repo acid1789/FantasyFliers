@@ -9,6 +9,7 @@ public class BaseLoader : MonoBehaviour {
 	const string kAssetBundlesPath = "/AssetBundles/";
 
     protected GameObject LastLoadedAsset;
+    protected TextAsset LastLoadedText;
 
 	// Use this for initialization.
 	IEnumerator Start ()
@@ -23,7 +24,7 @@ public class BaseLoader : MonoBehaviour {
 		//DontDestroyOnLoad(gameObject);
 		
 #if UNITY_EDITOR
-		Debug.Log ("We are " + (AssetBundleManager.SimulateAssetBundleInEditor ? "in Editor simulation mode" : "in normal mode") );
+		//Debug.Log ("We are " + (AssetBundleManager.SimulateAssetBundleInEditor ? "in Editor simulation mode" : "in normal mode") );
 #endif
 
 		string platformFolderForAssetBundles = 
@@ -105,7 +106,7 @@ public class BaseLoader : MonoBehaviour {
 
 	protected IEnumerator Load (string assetBundleName, string assetName)
 	{
-		Debug.Log("Start to load " + assetName + " at frame " + Time.frameCount);
+		//Debug.Log("Start to load " + assetName + " at frame " + Time.frameCount);
 
 		// Load asset from assetBundle.
 		AssetBundleLoadAssetOperation request = AssetBundleManager.LoadAssetAsync(assetBundleName, assetName, typeof(GameObject) );
@@ -115,7 +116,7 @@ public class BaseLoader : MonoBehaviour {
 
 		// Get the asset.
 		GameObject prefab = request.GetAsset<GameObject> ();
-		Debug.Log(assetName + (prefab == null ? " isn't" : " is")+ " loaded successfully at frame " + Time.frameCount );
+		//Debug.Log(assetName + (prefab == null ? " isn't" : " is")+ " loaded successfully at frame " + Time.frameCount );
         LastLoadedAsset = prefab;
         //if (prefab != null)
         //GameObject.Instantiate(prefab);
@@ -123,7 +124,7 @@ public class BaseLoader : MonoBehaviour {
 
 	protected IEnumerator LoadLevel (string assetBundleName, string levelName, bool isAdditive)
 	{
-		Debug.Log("Start to load scene " + levelName + " at frame " + Time.frameCount);
+		//Debug.Log("Start to load scene " + levelName + " at frame " + Time.frameCount);
 
 		// Load level from assetBundle.
 		AssetBundleLoadOperation request = AssetBundleManager.LoadLevelAsync(assetBundleName, levelName, isAdditive);
@@ -132,8 +133,20 @@ public class BaseLoader : MonoBehaviour {
 		yield return StartCoroutine(request);
 
 		// This log will only be output when loading level additively.
-		Debug.Log("Finish loading scene " + levelName + " at frame " + Time.frameCount);
+		//Debug.Log("Finish loading scene " + levelName + " at frame " + Time.frameCount);
 	}
+
+    protected IEnumerator LoadTextFile(string assetBundleName, string assetName)
+    {
+        AssetBundleLoadAssetOperation request = AssetBundleManager.LoadAssetAsync(assetBundleName, assetName, typeof(UnityEngine.TextAsset));
+        if (request == null)
+            yield break;
+        yield return StartCoroutine(request);
+
+        // Get the asset.
+        TextAsset asset = request.GetAsset<TextAsset>();
+        LastLoadedText = asset;
+    }
 
 	// Update is called once per frame
 	protected void Update () {

@@ -48,6 +48,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetworkCore\NetworkCore.csproj">
+      <Project>{6877f982-bb8d-428e-b017-afb86a00be95}</Project>
+      <Name>NetworkCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServerCore\ServerCore.csproj">
       <Project>{DE59F03B-351D-490B-AD42-20D21D0C57EE}</Project>
       <Name>ServerCore</Name>
